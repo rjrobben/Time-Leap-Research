@@ -23,9 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install gitpython boto3
 
-      - name: SSHX
-        run: curl -sSf https://sshx.io/get | sh && sshx
-
       - name: Check commits and send email using AWS SES
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
