@@ -50,12 +50,13 @@ jobs:
               body = 'You should fuck yourself for not making any progress today!'
           else:
               subject = f'Progress Summary: {len(commits)} Commits Today'
-              body = 'Commit Summary:\\n' + '\\n'.join(commit.message for commit in commits)
+              body = 'Today Progress Summary:\n\n' + ''.join(f"- {commit.message}" for commit in commits)
           
           # Send email
           ses_client = boto3.client('ses', region_name=os.getenv("AWS_REGION"),
                                     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
                                     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+                                    )
           response = ses_client.send_email(
               Source=os.getenv("SENDER_EMAIL"),
               Destination={
