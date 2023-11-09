@@ -39,7 +39,7 @@ jobs:
           repo = git.Repo('.')
           
           # Check for commits in the last day
-          commits = list(repo.iter_commits(since='1.day'))
+          commits = list(repo.iter_commits(since='1.day.ago'))
           
           # Email content
           subject = ''
