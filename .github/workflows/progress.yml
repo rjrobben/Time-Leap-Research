@@ -26,13 +26,14 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-1' # Change to your AWS SES region
+          AWS_REGION: 'us-east-1'
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }} # Must be verified with AWS SES
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: |
           import git
           import boto3
           from datetime import datetime, timedelta
+          import os
 
           # Initialize git repo
           repo = git.Repo('.')
@@ -52,14 +53,14 @@ jobs:
               body = 'Commit Summary:\\n' + '\\n'.join(commit.message for commit in commits)
           
           # Send email
-          ses_client = boto3.client('ses', region_name=AWS_REGION,
-                                    aws_access_key_id=AWS_ACCESS_KEY_ID,
-                                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+          ses_client = boto3.client('ses', region_name=os.getenv("AWS_REGION"),
+                                    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                                    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
           response = ses_client.send_email(
-              Source=SENDER_EMAIL,
+              Source=os.getenv("SENDER_EMAIL"),
               Destination={
                   'ToAddresses': [
-                      RECEIVER_EMAIL,
+                      os.getenv("RECEIVER_EMAIL"),
                   ],
               },
               Message={
