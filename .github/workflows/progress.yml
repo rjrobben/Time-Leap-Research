@@ -2,7 +2,7 @@ name: Daily Progress Check
 
 on:
   schedule:
-    - cron: '26 0 * * *'
+    - cron: '39/5 0 * * *'
 
 jobs:
   check-progress:
